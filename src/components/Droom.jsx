@@ -8,10 +8,6 @@ import RoomNavbar from "./RoomNavbar";
 
 import { useLocation } from 'react-router-dom';
 
-
-
-
-
 const Droom = () => {
 
   const location = useLocation();
@@ -22,10 +18,7 @@ const Droom = () => {
       <RoomNavbar />
 
 
-      {/* <div>
-      <h1>{roomDetails.roomType || 'Default Room'}</h1>
-      <p>Price: {roomDetails.price || 'No price available'}</p>
-    </div> */}
+     
   
       <div className="landing-page">
         <br />
@@ -90,11 +83,7 @@ const Droom = () => {
             <div>
               <br />
               <br />
-              {/* <div className="reviews-title1 ">
-                <h3>JOSEPH</h3>
-                <p>These modern air-conditined rooms each contain a double bed,word desk,an en-suite bathroom with a shower and bathroom amenties.Each room is fitted with flat-scrreen satellite TV,tea and coffee station,electronic safe,and a bar fridge.</p>
-
-              </div> */}
+             
 
             </div>
             

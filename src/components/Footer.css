@@ -27,3 +27,16 @@
      color: white; 
      margin-right: 10px; 
   }
+
+  .footer-terms {
+    margin-top: 20px;
+  }
+  
+  .footer-terms a {
+    text-decoration: none;
+    color: #007bff; 
+  }
+  
+  .footer-terms a:hover {
+    text-decoration: underline;
+  }

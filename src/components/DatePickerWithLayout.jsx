@@ -14,17 +14,26 @@ import OrderConfirmed from "./OrderConfirmed";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useSelector, useDispatch } from 'react-redux';
 import { setNumberOfRooms, setNumberOfGuests, setCheckInDate, setCheckOutDate } from '../redux/bookingSlice';
+import BookingPage from "./BookingPage";
 
 
 function DatePickerWithLayout() {
   const navigate = useNavigate();
-
+  const { user } = useUserAuth();
   const dispatch = useDispatch();
 
   const { numberOfRooms, numberOfGuests, checkInDate, checkOutDate } = useSelector(state => state.booking);
   
   const [selectedCheckInDate, setSelectedCheckInDate] = useState(checkInDate ? new Date(checkInDate) : null);
   const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(checkOutDate ? new Date(checkOutDate) : null);
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const roomPrice = 300.00;
+  const [paymentData, setPaymentData] = useState({});
+  const [isEditingRoom, setIsEditingRoom] = useState(false);
+  const [newRoomName, setNewRoomName] = useState("");
+
+  
+
 
   const handleCheckInDateChange = (date) => {
     setSelectedCheckInDate(date);
@@ -38,17 +47,17 @@ function DatePickerWithLayout() {
 
 
   
-  const [bookingDetails, setBookingDetails] = useState(null);
   
-  const [paymentData, setPaymentData] = useState({});
-  const [isEditingRoom, setIsEditingRoom] = useState(false);
-  const [newRoomName, setNewRoomName] = useState("");
-
-  const { user } = useUserAuth();
 
   const handleConfirmOrder = () => {
     console.log("Order confirmed");
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("Login"); 
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchBookingDetails = async () => {
@@ -61,7 +70,7 @@ function DatePickerWithLayout() {
         setNewRoomName(data.roomType);
 
         const totalAmount = data.price || 0;
-        setPaymentData((prevData) => ({ ...prevData, amount: totalAmount }));
+        setPaymentData((prevData) => ({  amount: totalAmount }));
 
 
       } else {
@@ -75,13 +84,18 @@ function DatePickerWithLayout() {
 
   useEffect(() => {
     if (bookingDetails) {
+      const validNumberOfRooms = Number.isNaN(numberOfRooms) ? 0 : numberOfRooms;
+      const calculatedTotalPrice = roomPrice * validNumberOfRooms;
+
       setBookingDetails({
+
+        
         ...bookingDetails,
         checkIn: selectedCheckInDate,
         checkOut: selectedCheckOutDate,
-        numberOfRooms,
+        numberOfRooms: validNumberOfRooms,
         numberOfGuests,
-        totalPrice: bookingDetails.price * numberOfRooms,
+        totalPrice: calculatedTotalPrice,
       });
     }
   }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms,numberOfGuests]);
@@ -104,10 +118,10 @@ function DatePickerWithLayout() {
 
   }
 
-
   const createOrder = (data, actions) => {
 
-    const totalAmount = "100.00";
+    const totalAmount = bookingDetails && bookingDetails.totalPrice 
+    ? bookingDetails.totalPrice.toFixed(2): '0.00'; 
 
     if (parseFloat(totalAmount) <= 0) {
       console.error("The total amount must be greather than zero");
@@ -128,9 +142,15 @@ function DatePickerWithLayout() {
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then((details) => {
+      console.log('Order ID:', data.orderID);
       alert("Transaction completed by" + details.payer.name.given_name);
     });
   };
+  paypal.Buttons({
+    createOrder: createOrder,
+    onApprove: onApprove
+  }).render('#paypal-button-container');
+
 
   const handleRoomNameChange = (e) => {
     setNewRoomName(e.target.value);
@@ -161,13 +181,7 @@ function DatePickerWithLayout() {
       <div className="calendar-container">
         <div className="search-box">
 
-          {/* <div className="search-item"> Hello
-            <span style={{ fontWeight: "bold", cursor: "pointer" }}
-              onClick={handleEmailClick}
-            >
-              ({user?.email || "Not logged in"})</span>    Here is your Booking Summary       
-              
-               </div> */}
+        
 
 
           <div className="search-item">
@@ -207,9 +221,7 @@ function DatePickerWithLayout() {
             />
           </div>
 
-          {/* <div>
-            <button className="search-item" onClick={handleClick}  >Change Room</button>
-          </div> */}
+       
         </div>
 
       </div>
@@ -275,12 +287,42 @@ function DatePickerWithLayout() {
               <PayPalScriptProvider options={initialOptions}  >
 
 <PayPalButtons
-  createOrder={(data, actions) => createOrder(data, actions)}
-  onApprove={(data, actions) => onApprove(data, actions)}
+  createOrder={(data, actions) => {
+    const totalAmount = bookingDetails && bookingDetails.totalPrice
+          ? bookingDetails.totalPrice.toFixed(2)
+          : '0.00';
+
+        if (bookingDetails && parseFloat(totalAmount) <= 0) {
+          console.error("The total amount must be greater than zero");
+          return null; 
+        }
+
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                currency_code: "USD",
+                value: totalAmount,
+              },
+            },
+          ],
+        });
+      }}
+      onApprove={async (data, actions) => {
+        const details = await actions.order.capture();
+        console.log('Order ID:', data.orderID);
+        alert("Transaction completed by " + details.payer.name.given_name);
+      }}
+
+
+
 />
 </PayPalScriptProvider>
               </div>
 
+<div>
+  <BookingPage/>
+</div>
               
 
 

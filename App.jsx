@@ -35,12 +35,12 @@ function App() {
           <Col>
               <Routes>
 
-                <Route path="Acc" element={<ProtectedRoute>
+                <Route path="/" element={<ProtectedRoute>
                   <Accommodation/>
                 </ProtectedRoute>} /> 
 
                 <Route path="/" element={<Login />} />
-                <Route path="Login" element={<Login />} />
+                <Route path="/logIn" element={<Login />} />
 
                 <Route path="Acc" element={<Accommodation />} /> 
                 <Route path="Droom" element={<Droom />} />

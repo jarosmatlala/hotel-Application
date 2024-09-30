@@ -9,14 +9,13 @@ import {
     sendPasswordResetEmail
 }  from "firebase/auth";
 import {auth} from '../firebase';
-// import { GoogleAuthProvider } from "firebase/auth/web-extension";
 
 
 const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({children}){
 
-const [user,setUser] = useState("null");
+const [user,setUser] = useState(null);
 
 
     function signUp(email,password){
