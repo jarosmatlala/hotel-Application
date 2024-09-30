@@ -2,8 +2,9 @@ import React from "react";
 import Room2 from "../assets/images/Room2.jpg";
 import Room1 from "../assets/images/Room2.jpg";
 import '@fortawesome/fontawesome-free/css/all.css';
-import './Accommodation.css';
 import RoomNavbar from "./RoomNavbar";
+import Footer from "./Footer";
+// import Broom from "./Broom.css";
 
 
 
@@ -30,10 +31,10 @@ const Broom = () => {
           <h3>FEATURES</h3>
 <br />
 
-          <i classNameName="fa-solid fa-wifi">WIFI</i>
-          <i classNameName="fa-solid fa-shower">SHOWER</i>
-          <i classNameName="fa-solid fa-tv">DSTV</i>
-          <i classNameName="fa-solid fa-tv">DSTV</i>
+          <i className="fa-solid fa-wifi">WIFI</i>
+          <i className="fa-solid fa-shower">SHOWER</i>
+          <i className="fa-solid fa-tv">DSTV</i>
+          <i className="fa-solid fa-tv">DSTV</i>
 
 <br />
 <br />
@@ -78,21 +79,19 @@ const Broom = () => {
           <div>
             <br />
         <br />
-<div className="reviews-title1 ">
-  <h3>JOSEPH</h3>
-<p>These modern air-conditined rooms each contain a double bed,word desk,an en-suite bathroom with a shower and bathroom amenties.Each room is fitted with flat-scrreen satellite TV,tea and coffee station,electronic safe,and a bar fridge.</p>
 
-</div>
 
   </div>
+
         </div>
         
 
       </div>
 
+      <Footer/>
 
     </div>
-<Footer/>
+
     </>
 
 

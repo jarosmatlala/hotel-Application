@@ -19,7 +19,7 @@ import BookingPage from "./BookingPage";
 
 function DatePickerWithLayout() {
   const navigate = useNavigate();
-
+  const { user } = useUserAuth();
   const dispatch = useDispatch();
 
   const { numberOfRooms, numberOfGuests, checkInDate, checkOutDate } = useSelector(state => state.booking);
@@ -32,7 +32,7 @@ function DatePickerWithLayout() {
   const [isEditingRoom, setIsEditingRoom] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
 
-  const { user } = useUserAuth();
+  
 
 
   const handleCheckInDateChange = (date) => {
@@ -52,6 +52,12 @@ function DatePickerWithLayout() {
   const handleConfirmOrder = () => {
     console.log("Order confirmed");
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("Login"); 
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchBookingDetails = async () => {
@@ -175,13 +181,7 @@ function DatePickerWithLayout() {
       <div className="calendar-container">
         <div className="search-box">
 
-          {/* <div className="search-item"> Hello
-            <span style={{ fontWeight: "bold", cursor: "pointer" }}
-              onClick={handleEmailClick}
-            >
-              ({user?.email || "Not logged in"})</span>    Here is your Booking Summary       
-              
-               </div> */}
+        
 
 
           <div className="search-item">
@@ -221,9 +221,7 @@ function DatePickerWithLayout() {
             />
           </div>
 
-          {/* <div>
-            <button className="search-item" onClick={handleClick}  >Change Room</button>
-          </div> */}
+       
         </div>
 
       </div>
@@ -294,9 +292,9 @@ function DatePickerWithLayout() {
           ? bookingDetails.totalPrice.toFixed(2)
           : '0.00';
 
-        if (parseFloat(totalAmount) <= 0) {
+        if (bookingDetails && parseFloat(totalAmount) <= 0) {
           console.error("The total amount must be greater than zero");
-          return null; // Return null if total amount is not valid
+          return null; 
         }
 
         return actions.order.create({

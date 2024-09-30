@@ -26,6 +26,7 @@ import ForgotPassword from './components/forgotPassword';
 import Footer from "./components/Footer";
 import Create from "./components/Create";
 import Contact from "./components/Contact";
+import DatePicker from 'react-datepicker';
 
 function App() {
 
@@ -40,20 +41,19 @@ function App() {
                 </ProtectedRoute>} /> 
 
                 <Route path="/" element={<Login />} />
-                <Route path="LogIn" element={<Login />} />
-                <Route path="Acc" element={<Accommodation />} /> 
-                <Route path="Droom" element={<Droom />} />
-                <Route path="Troom" element={<Troom />} />
-                <Route path="Broom" element={<Broom />} />
-                <Route path="Hroom" element={<Hroom />} />
-                <Route path="Proom" element={<Proom />} />
+                <Route path="" element={<Accommodation />} /> 
+                <Route path="Droom" element={<ProtectedRoute><Droom /></ProtectedRoute>} />
+                <Route path="Troom" element={<ProtectedRoute><Troom /></ProtectedRoute>} />
+                <Route path="Broom" element={<ProtectedRoute><Broom /></ProtectedRoute>} />
+                <Route path="Hroom" element={<ProtectedRoute><Hroom /></ProtectedRoute>} />
+                <Route path="Proom" element={<ProtectedRoute><Proom /></ProtectedRoute>} />
                 <Route path="Create" element={<Create />} />
 
                 <Route path="Gallery" element={<Gallery />} />
                 <Route path="Contact" element={<Contact />} />
 
-                <Route path="DatePicker" element={< CustomDatePicker/>} />
-                <Route path="Date" element={<DatePickerWithLayout/>} />
+                <Route path="DatePicker" element={<ProtectedRoute><DatePicker /></ProtectedRoute>} />
+                <Route path="Date" element={<ProtectedRoute><Date /></ProtectedRoute>} />
                  <Route path="SignUp" element={<Signup />} />
                  <Route path="Forgot-password" element={<ForgotPassword />} />
               </Routes>           
