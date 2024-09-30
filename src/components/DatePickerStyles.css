@@ -2,11 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 330px;
+    flex-direction: column;
+    height: auto;
     background-color: #d3d1cb; 
     border-radius: 20px;
     padding: 20px;
-    width: 1100px;
+    max-width: 90%;
+    margin: 0 auto;
   }
   
   .search-box {
