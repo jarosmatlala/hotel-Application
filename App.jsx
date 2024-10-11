@@ -11,7 +11,7 @@ import { Button } from 'bootstrap';
 // import Home from "./components/Home";
 import { UserAuthContextProvider } from './context/UserAuthContext';
 import Navbar from './components/Navbar.jsX';
-import Accommodation from './components/Accommodation'; 
+import Accommodation from './components/Accommodation';
 import Droom from './components/Droom';
 import Troom from './components/Troom';
 
@@ -29,33 +29,33 @@ function App() {
 
   return (
     <div>
-<UserAuthContextProvider>
-      <Container>
-        <Row>
-          <Col>
+      <UserAuthContextProvider>
+        <Container>
+          <Row>
+            <Col>
               <Routes>
 
-                <Route path="/" element={<ProtectedRoute>
-                  <Accommodation/>
-                </ProtectedRoute>} /> 
+                <Route path="/" element=
+                  {<Accommodation />} />
+
 
                 <Route path="/" element={<Login />} />
                 <Route path="/logIn" element={<Login />} />
 
-                <Route path="Acc" element={<Accommodation />} /> 
+                <Route path="Acc" element={<Accommodation />} />
                 <Route path="Droom" element={<Droom />} />
                 <Route path="Troom" element={<Droom />} />
 
                 <Route path="Gallery" element={<Gallery />} />
-                <Route path="DatePicker" element={< CustomDatePicker/>} />
-                <Route path="Date" element={<DatePickerWithLayout/>} />
-                 <Route path="SignUp" element={<Signup />} />
-                 <Route path="confirmed" element={<OrderConfirmed />} />
+                <Route path="DatePicker" element={< CustomDatePicker />} />
+                <Route path="Date" element={<DatePickerWithLayout />} />
+                <Route path="SignUp" element={<Signup />} />
+                <Route path="confirmed" element={<OrderConfirmed />} />
 
-              </Routes>           
-          </Col>
-        </Row>
-      </Container> 
+              </Routes>
+            </Col>
+          </Row>
+        </Container>
       </UserAuthContextProvider>
 
 

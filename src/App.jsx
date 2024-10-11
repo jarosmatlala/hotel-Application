@@ -36,12 +36,11 @@ function App() {
      
               <Routes>
 
-                <Route path="Acc" element={<ProtectedRoute>
-                  <Accommodation/>
-                </ProtectedRoute>} /> 
+                <Route path="/" element=
+                  {<Accommodation/>} 
+                 />
 
-                <Route path="/" element={<Login />} />
-                <Route path="" element={<Accommodation />} /> 
+                <Route path="Login" element={<Login />} />
                 <Route path="Droom" element={<ProtectedRoute><Droom /></ProtectedRoute>} />
                 <Route path="Troom" element={<ProtectedRoute><Troom /></ProtectedRoute>} />
                 <Route path="Broom" element={<ProtectedRoute><Broom /></ProtectedRoute>} />
@@ -54,6 +53,7 @@ function App() {
 
                 <Route path="DatePicker" element={<ProtectedRoute><DatePicker /></ProtectedRoute>} />
                 <Route path="Date" element={<ProtectedRoute><Date /></ProtectedRoute>} />
+                <Route path= "Pay" element={<DatePickerWithLayout></DatePickerWithLayout>} />
                  <Route path="SignUp" element={<Signup />} />
                  <Route path="Forgot-password" element={<ForgotPassword />} />
               </Routes>           

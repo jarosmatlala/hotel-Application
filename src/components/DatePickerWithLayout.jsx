@@ -6,7 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect } from "react";
 import RoomNavbar from "./RoomNavbar";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CancelOutlined } from "@mui/icons-material";
@@ -23,7 +23,7 @@ function DatePickerWithLayout() {
   const dispatch = useDispatch();
 
   const { numberOfRooms, numberOfGuests, checkInDate, checkOutDate } = useSelector(state => state.booking);
-  
+
   const [selectedCheckInDate, setSelectedCheckInDate] = useState(checkInDate ? new Date(checkInDate) : null);
   const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(checkOutDate ? new Date(checkOutDate) : null);
   const [bookingDetails, setBookingDetails] = useState(null);
@@ -32,22 +32,22 @@ function DatePickerWithLayout() {
   const [isEditingRoom, setIsEditingRoom] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
 
-  
+
 
 
   const handleCheckInDateChange = (date) => {
     setSelectedCheckInDate(date);
-    dispatch(setCheckInDate(date ? date.toISOString() : null)); 
+    dispatch(setCheckInDate(date ? date.toISOString() : null));
   };
 
   const handleCheckOutDateChange = (date) => {
     setSelectedCheckOutDate(date);
-    dispatch(setCheckOutDate(date ? date.toISOString() : null)); 
+    dispatch(setCheckOutDate(date ? date.toISOString() : null));
   };
 
 
-  
-  
+
+
 
   const handleConfirmOrder = () => {
     console.log("Order confirmed");
@@ -55,7 +55,7 @@ function DatePickerWithLayout() {
 
   useEffect(() => {
     if (!user) {
-      navigate("Login"); 
+      navigate("Login");
     }
   }, [user, navigate]);
 
@@ -70,7 +70,7 @@ function DatePickerWithLayout() {
         setNewRoomName(data.roomType);
 
         const totalAmount = data.price || 0;
-        setPaymentData((prevData) => ({  amount: totalAmount }));
+        setPaymentData((prevData) => ({ amount: totalAmount }));
 
 
       } else {
@@ -89,7 +89,7 @@ function DatePickerWithLayout() {
 
       setBookingDetails({
 
-        
+
         ...bookingDetails,
         checkIn: selectedCheckInDate,
         checkOut: selectedCheckOutDate,
@@ -98,7 +98,7 @@ function DatePickerWithLayout() {
         totalPrice: calculatedTotalPrice,
       });
     }
-  }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms,numberOfGuests]);
+  }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
 
   const handleEmailClick = () => {
     if (bookingDetails) {
@@ -120,8 +120,8 @@ function DatePickerWithLayout() {
 
   const createOrder = (data, actions) => {
 
-    const totalAmount = bookingDetails && bookingDetails.totalPrice 
-    ? bookingDetails.totalPrice.toFixed(2): '0.00'; 
+    const totalAmount = bookingDetails && bookingDetails.totalPrice
+      ? bookingDetails.totalPrice.toFixed(2) : '0.00';
 
     if (parseFloat(totalAmount) <= 0) {
       console.error("The total amount must be greather than zero");
@@ -146,10 +146,11 @@ function DatePickerWithLayout() {
       alert("Transaction completed by" + details.payer.name.given_name);
     });
   };
-  paypal.Buttons({
-    createOrder: createOrder,
-    onApprove: onApprove
-  }).render('#paypal-button-container');
+
+  // paypal.Buttons({
+  //   createOrder: createOrder,
+  //   onApprove: onApprove
+  // }).render('#paypal-button-container');
 
 
   const handleRoomNameChange = (e) => {
@@ -181,7 +182,7 @@ function DatePickerWithLayout() {
       <div className="calendar-container">
         <div className="search-box">
 
-        
+
 
 
           <div className="search-item">
@@ -221,7 +222,7 @@ function DatePickerWithLayout() {
             />
           </div>
 
-       
+
         </div>
 
       </div>
@@ -234,13 +235,13 @@ function DatePickerWithLayout() {
         {bookingDetails && (
           <div className="summary">
 
-<div className="search-item"> Hello
-            <span style={{ fontWeight: "bold", cursor: "pointer" }}
-              onClick={handleEmailClick}
-            >
-              ({user?.email || "Not logged in"})</span>    Here is your Booking Summary       
-              
-               </div>
+            <div className="search-item"> Hello
+              <span style={{ fontWeight: "bold", cursor: "pointer" }}
+                onClick={handleEmailClick}
+              >
+                ({user?.email || "Not logged in"})</span>    Here is your Booking Summary
+
+            </div>
 
             <h4>Booking Summary</h4>
 
@@ -284,46 +285,46 @@ function DatePickerWithLayout() {
 
               <div className="paybtn">
 
-              <PayPalScriptProvider options={initialOptions}  >
+                <PayPalScriptProvider options={initialOptions}  >
 
-<PayPalButtons
-  createOrder={(data, actions) => {
-    const totalAmount = bookingDetails && bookingDetails.totalPrice
-          ? bookingDetails.totalPrice.toFixed(2)
-          : '0.00';
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      const totalAmount = bookingDetails && bookingDetails.totalPrice
+                        ? bookingDetails.totalPrice.toFixed(2)
+                        : '0.00';
 
-        if (bookingDetails && parseFloat(totalAmount) <= 0) {
-          console.error("The total amount must be greater than zero");
-          return null; 
-        }
+                      if (bookingDetails && parseFloat(totalAmount) <= 0) {
+                        console.error("The total amount must be greater than zero");
+                        return null;
+                      }
 
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                currency_code: "USD",
-                value: totalAmount,
-              },
-            },
-          ],
-        });
-      }}
-      onApprove={async (data, actions) => {
-        const details = await actions.order.capture();
-        console.log('Order ID:', data.orderID);
-        alert("Transaction completed by " + details.payer.name.given_name);
-      }}
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              currency_code: "USD",
+                              value: totalAmount,
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={async (data, actions) => {
+                      const details = await actions.order.capture();
+                      console.log('Order ID:', data.orderID);
+                      alert("Transaction completed by " + details.payer.name.given_name);
+                    }}
 
 
 
-/>
-</PayPalScriptProvider>
+                  />
+                </PayPalScriptProvider>
               </div>
 
-<div>
-  <BookingPage/>
-</div>
-              
+              <div>
+                <BookingPage />
+              </div>
+
 
 
             </div>
