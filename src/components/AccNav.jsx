@@ -24,9 +24,9 @@ const AccNav = () => {
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
 
 
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a href="/Acc" className="nav-links">Accomodation</a>
-          </li>
+          </li> */}
          
           {/* <li className="nav-item">
             <a href="/Registration" className="nav-links">Contact Us</a>

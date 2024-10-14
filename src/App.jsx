@@ -53,7 +53,7 @@ function App() {
 
                 <Route path="DatePicker" element={<ProtectedRoute><DatePicker /></ProtectedRoute>} />
                 <Route path="Date" element={<ProtectedRoute><Date /></ProtectedRoute>} />
-                <Route path= "Pay" element={<DatePickerWithLayout></DatePickerWithLayout>} />
+                <Route path= "/Login/Paypal" element={<DatePickerWithLayout></DatePickerWithLayout>} />
                  <Route path="SignUp" element={<Signup />} />
                  <Route path="Forgot-password" element={<ForgotPassword />} />
               </Routes>           

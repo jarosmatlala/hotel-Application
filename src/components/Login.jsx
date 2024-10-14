@@ -19,7 +19,7 @@ const Login = () => {
         setError("");
         try {
             await logIn(email, password);
-            navigate("Pay");
+            navigate("Paypal");
         } catch (err) {
             setError(err.message);
         }
@@ -48,7 +48,9 @@ const Login = () => {
                                 type="email"
                                 placeholder="Email address"
                                 onChange={(e) => setEmail(e.target.value)} />
+                              </Form.Group>  
 
+                              <Form.Group className="h2" controlId="formPassword">
                             <Form.Control
                                 type="password" placeholder="Password"
                                 onChange={(e) => setPassword(e.target.value)} />

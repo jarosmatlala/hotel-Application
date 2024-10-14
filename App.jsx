@@ -39,7 +39,7 @@ function App() {
                   {<Accommodation />} />
 
 
-                <Route path="/" element={<Login />} />
+                <Route path="" element={<Login />} />
                 <Route path="/logIn" element={<Login />} />
 
                 <Route path="Acc" element={<Accommodation />} />
@@ -48,7 +48,7 @@ function App() {
 
                 <Route path="Gallery" element={<Gallery />} />
                 <Route path="DatePicker" element={< CustomDatePicker />} />
-                <Route path="Date" element={<DatePickerWithLayout />} />
+                <Route path="Paypal" element={<DatePickerWithLayout />} />
                 <Route path="SignUp" element={<Signup />} />
                 <Route path="confirmed" element={<OrderConfirmed />} />
 
@@ -59,7 +59,7 @@ function App() {
       </UserAuthContextProvider>
 
 
-    </div>
+    </div> 
   );
 }
 

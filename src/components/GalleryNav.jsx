@@ -16,14 +16,14 @@ const GalleryNav = () => {
         </div>
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
-            <a href="/Acc" className="nav-links">Accomodation</a>
+            <a href="/" className="nav-links">Accomodation</a>
           </li>
          
           <li className="nav-item">
-            <a href="/Registration" className="nav-links">Contact Us</a>
+            <a href="/Contact" className="nav-links">Contact Us</a>
           </li>
           <li className="nav-item">
-            <a href="/Date" className="nav-links">Book-Now</a>
+            <a href="/Login" className="nav-links">Book-Now</a>
           </li>
          
         </ul>
