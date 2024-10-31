@@ -1,9 +1,15 @@
-/* Navbar.css */
+
+
 
 .landing-page {
-    padding: 20px;
-    background-color: #f9f9f9; /* Light background for contrast */
-  }
+  padding: 20px;
+  background-color: #f8f8f8; 
+  margin: 0 auto;
+  max-width: 1200px; 
+}
+
+
+
   
   .image-container {
     text-align: center;

@@ -17,7 +17,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: white;
   }
   
   .logo {
@@ -43,7 +43,7 @@ body {
   .contact-info {
     text-align: center;
     padding: 50px 20px;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: white;
   }
   
   .contact-info h1 {
