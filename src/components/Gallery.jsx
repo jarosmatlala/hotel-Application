@@ -7,15 +7,17 @@ import GalleryNav from "./GalleryNav";
 
 const Gallery = () => {
     const navigate = useNavigate();
+    const [suites, setSuites] = useState([]);
 
-    const handleRoomSelection = (roomType, price) => {
-        const roomDetails = {
-            roomType,
-            price,
-            userId: "unique-user-id", 
-        };
-        navigate('/Droom', { state: roomDetails });
-    };
+
+    // const handleRoomSelection = (roomType, price) => {
+    //     const roomDetails = {
+    //         roomType,
+    //         price,
+    //         userId: "unique-user-id", 
+    //     };
+    //     navigate('/Droom', { state: roomDetails });
+    // };
 
     return (
         <>

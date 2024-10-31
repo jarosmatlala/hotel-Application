@@ -1,10 +1,8 @@
 .navbar {
     background: #f5d59a;
     height: 80px;
-    /* display: flex; */
     justify-content: center;
-    /* align-items: center; */
-    /* font-size: 1.2rem; */
+    
   }
   
   .navbar-container {
@@ -24,7 +22,6 @@
     text-decoration: none;
     font-size: 2rem;
     display: flex;
-    /* align-items: center; */
     color: black;
     padding-bottom: 200px;
     

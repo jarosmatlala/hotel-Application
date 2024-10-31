@@ -53,6 +53,7 @@ const Accomodation = () => {
                 {room.images && room.images.map((image, index) => (
                   <img key={index} src={image} alt={room.description} className="landing-image" />
                 ))}
+                <p className="room-description">{room.description}</p> 
                 <button className="book-now-btn" onClick={handleBook}>VIEW</button>
               </div>
             ))}
