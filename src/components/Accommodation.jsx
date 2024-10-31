@@ -1,12 +1,12 @@
 import React from "react";
-import Room2 from "../assets/images/Room2.jpg";
-import Room1 from "../assets/images/Room2.jpg";
-import room1 from "../assets/images/room1.jpg";
-import Room3 from "../assets/images/Room3.jpg";
-import Room7 from "../assets/images/Room7.jpg";
-import LOGO from "../assets/images/LOGO.png";
-import Deluxe from "../assets/images/Deluxe.webp";
-import images from "../assets/images/images.jfif"
+// import Room2 from "../assets/images/Room2.jpg";
+// import Room1 from "../assets/images/Room2.jpg";
+// import room1 from "../assets/images/room1.jpg";
+// import Room3 from "../assets/images/Room3.jpg";
+// import Room7 from "../assets/images/Room7.jpg";
+// import LOGO from "../assets/images/LOGO.png";
+// import Deluxe from "../assets/images/Deluxe.webp";
+// import images from "../assets/images/images.jfif"
 import { Button } from "react-bootstrap";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
@@ -16,43 +16,57 @@ import { Navbar } from "react-bootstrap";
 import AccNav from "./AccNav";
 import double from "../assets/images/double.jpg";
 import Footer from "./Footer";
+import {firestore} from "../firebase";
 
 const Accomodation = () => {
+  const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
 
   
 
-  const handleBook = () => {
-    navigate('/Droom')
-  }
+  // const handleBook = () => {
+  //   navigate('/Droom')
+  // }
 
-  const handleTroom = () => {
-    navigate('/Troom')
+  // const handleTroom = () => {
+  //   navigate('/Troom')
 
-  }
+  // }
 
-  const handleBroom = () => {
-    navigate('/Broom')
+  // const handleBroom = () => {
+  //   navigate('/Broom')
 
-  }
+  // }
 
-  const handleHroom = () => {
-    navigate('/Hroom')
+  // const handleHroom = () => {
+  //   navigate('/Hroom')
 
-  }
+  // }
 
-  const handleProom = () => {
-    navigate('/Proom')
+  // const handleProom = () => {
+  //   navigate('/Proom')
 
-  }
+  // }
 
-  const handleDroom = () => {
-    navigate('/Droom')
+  // const handleDroom = () => {
+  //   navigate('/Droom')
 
-  }
+  // }
 
-  const { user } = useUserAuth();
-  console.log(user);
+  // const { user } = useUserAuth();
+  // console.log(user);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      const roomsCollection = await firestore.collection("rooms").get();
+      setRooms(roomsCollection.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    };
+    fetchRooms();
+  }, []);
+
+  const handleViewRoom = (roomId) => {
+    navigate(`/room/${roomId}`);
+  };
 
   return (
     <>
@@ -60,7 +74,7 @@ const Accomodation = () => {
       <AccNav/>
 
 
-      <div className="landing-page">
+      {/* <div className="landing-page">
         <div className="image-container">
           <br />
           <br />
@@ -136,27 +150,43 @@ const Accomodation = () => {
 
 
 
+
+
         </div>
 
-        <div className="section1">
+        {/* <div className="section1">
             <h3>APARTMENTS</h3>
 
-          </div>
+          </div> */}
 
           <Footer/>
 
  
   
-
+{/* 
         </div>
-  
+   */} 
+
+return (
+    <div className="landing-page">
+      {rooms.map((room) => (
+        <div key={room.id} className="room-card">
+          <img src={room.image} alt={room.name} className="room-image" />
+          <div className="room-title">{room.name}</div>
+          <button onClick={() => handleViewRoom(room.id)}>VIEW</button>
+          <button>R{room.price}</button>
+        </div>
+      ))}
+    </div>
+  );
+  <Footer/>
 
 
         </>
-
   );
   <Footer/>
 
 };
+
 
 export default Accomodation;
