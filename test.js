@@ -1,15 +1,15 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-
 import './Gallery.css';
 import GalleryNav from "./GalleryNav";
 
 const Gallery = () => {
+    const [suites, setSuites] = useState([]); // State to store suites data
     const navigate = useNavigate();
-    const [suites, setSuites] = useState([]);
 
+    // Fetch suites data from Firestore
     const fetchSuites = async () => {
         const querySnapshot = await getDocs(collection(db, "suites"));
         const suitesData = [];
@@ -36,7 +36,7 @@ const Gallery = () => {
         <>
             <GalleryNav />
             <div className="gallery-container">
-{suites.map((suite) => (
+                {suites.map((suite) => (
                     <div key={suite.id} className="gallery-section">
                         <h3 className="gallery-title">{suite.roomType}</h3>
                         <div className="gallery-grid">
@@ -52,12 +52,12 @@ const Gallery = () => {
                         </div>
                     </div>
                 ))}
-
             </div>
         </>
     );
 };
 
+// RoomCard component for displaying individual room information
 const RoomCard = ({ roomType, price, image, onSelect }) => (
     <div className="room-card">
         <div className="room-image-container">
