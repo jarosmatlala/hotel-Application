@@ -81,9 +81,6 @@ const Accomodation = () => {
             ))}
           </div>
 
-          <div className="section1">
-            <h3>APARTMENTS</h3>
-          </div>
 
           <Footer />
 

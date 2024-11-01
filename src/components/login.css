@@ -53,7 +53,7 @@ body {
 
 .grid button {
     width: 100%;
-    background-color: #007bff;
+    background-color:#d9a454;
     color: white;
     border: none;
     padding: 10px;
@@ -63,7 +63,7 @@ body {
 }
 
 .grid button:hover {
-    background-color: #0056b3;
+    /* background-color: #0056b3; */
 }
 
 .box {

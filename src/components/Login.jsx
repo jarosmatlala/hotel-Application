@@ -60,7 +60,7 @@ const Login = () => {
 
                         <div className="grid">
                             <Button variant="primary" type="Submit">
-                                Log In
+                              <Link to="/Home">  Log In</Link>
                             </Button>
                         </div>
 
@@ -68,7 +68,7 @@ const Login = () => {
                             <Link to="/forgot-password">Forgot Password</Link>
                         </div>
                         <div className="box">
-                            Dont have an account ? <Link to="Signup">Sign up</Link>
+                            Dont have an account ? <Link to="/Signup">Sign up</Link>
                         </div>
                     </Form>
                     <hr />

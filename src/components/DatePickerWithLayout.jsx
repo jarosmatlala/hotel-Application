@@ -130,7 +130,6 @@ const DatePickerWithLayout = () => {
         <>
             <RoomNavbar />
             <div>
-                <h1>Select Date</h1>
                 <div className="calendar-container">
                     <div className="search-box">
                         <div className="search-item">
@@ -189,7 +188,7 @@ const DatePickerWithLayout = () => {
 
 
 
-                        <h2>PayPal Payment</h2>
+                        <h2>Proceed With Payment </h2>
                         {error && <div style={{ color: "red" }}>{error}</div>}
                         <PayPalScriptProvider options={{ clientId: "AeAoUdddVyuyGm9-_loMbx_L7GNzHcRsRFu1KUu-LDzzs81FvBCOmoUi465med8ooCu5I_cbetOdeZV6" }}>
                             <PayPalButtons
