@@ -2,7 +2,7 @@ import React from "react";
 import Room2 from "../assets/images/Room2.jpg";
 import Room1 from "../assets/images/Room2.jpg";
 import '@fortawesome/fontawesome-free/css/all.css';
-import './Accommodation.css';
+// import './Accommodation.css';
 import RoomNavbar from "./RoomNavbar";
 
 
@@ -46,7 +46,7 @@ const Droom = () => {
 
           <div className="room-card">
 
-            <div class="room-image-container">
+            <div className="room-image-container">
               <img src={Room2} alt="Landing" className="landing-image" />
             </div>
           </div>

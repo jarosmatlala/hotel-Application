@@ -1,370 +1,207 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DatePickerStyles.css";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useEffect } from "react";
 import RoomNavbar from "./RoomNavbar";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CancelOutlined } from "@mui/icons-material";
 import OrderConfirmed from "./OrderConfirmed";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from "react-router-dom";
 import { setNumberOfRooms, setNumberOfGuests, setCheckInDate, setCheckOutDate } from '../redux/bookingSlice';
-import BookingPage from "./BookingPage";
 
+const DatePickerWithLayout = () => {
+    const location = useLocation();
+    const room = location.state?.room;
+    const [selectedCheckInDate, setSelectedCheckInDate] = useState(null);
+    const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(null);
+    const [bookingDetails, setBookingDetails] = useState(null);
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const { user } = useUserAuth();
+    const dispatch = useDispatch();
 
-function DatePickerWithLayout() {
-  const navigate = useNavigate();
-  const { user } = useUserAuth();
-  const dispatch = useDispatch();
+    const { numberOfRooms, numberOfGuests } = useSelector(state => state.booking);
 
-  const { numberOfRooms, numberOfGuests, checkInDate, checkOutDate } = useSelector(state => state.booking);
-  
-  const [selectedCheckInDate, setSelectedCheckInDate] = useState(checkInDate ? new Date(checkInDate) : null);
-  const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(checkOutDate ? new Date(checkOutDate) : null);
-  const [bookingDetails, setBookingDetails] = useState(null);
-  const roomPrice = 300.00;
-  const [paymentData, setPaymentData] = useState({});
-  const [isEditingRoom, setIsEditingRoom] = useState(false);
-  const [newRoomName, setNewRoomName] = useState("");
+    useEffect(() => {
+        if (!user) {
+            navigate("/login");
+        }
+    }, [user, navigate]);
 
-  
+    useEffect(() => {
+        if (room) {
+            console.log('Room Data:', room);
+            const calculatedTotalPrice = room.price * numberOfRooms;
+            console.log('Calculated Total Price:', calculatedTotalPrice);
 
-
-  const handleCheckInDateChange = (date) => {
-    setSelectedCheckInDate(date);
-    dispatch(setCheckInDate(date ? date.toISOString() : null)); 
-  };
-
-  const handleCheckOutDateChange = (date) => {
-    setSelectedCheckOutDate(date);
-    dispatch(setCheckOutDate(date ? date.toISOString() : null)); 
-  };
-
-
-  
-  
-
-  const handleConfirmOrder = () => {
-    console.log("Order confirmed");
-  };
-
-  useEffect(() => {
-    if (!user) {
-      navigate("Login"); 
-    }
-  }, [user, navigate]);
-
-  useEffect(() => {
-    const fetchBookingDetails = async () => {
-      const docRef = doc(db, "bookings", "booking-id");
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setBookingDetails(data);
-        setNewRoomName(data.roomType);
-
-        const totalAmount = data.price || 0;
-        setPaymentData((prevData) => ({  amount: totalAmount }));
-
-
-      } else {
-        console.log("No such document!");
-      }
-
-    };
-
-    fetchBookingDetails();
-  }, []);
-
-  useEffect(() => {
-    if (bookingDetails) {
-      const validNumberOfRooms = Number.isNaN(numberOfRooms) ? 0 : numberOfRooms;
-      const calculatedTotalPrice = roomPrice * validNumberOfRooms;
-
-      setBookingDetails({
-
-        
-        ...bookingDetails,
-        checkIn: selectedCheckInDate,
-        checkOut: selectedCheckOutDate,
-        numberOfRooms: validNumberOfRooms,
-        numberOfGuests,
-        totalPrice: calculatedTotalPrice,
-      });
-    }
-  }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms,numberOfGuests]);
-
-  const handleEmailClick = () => {
-    if (bookingDetails) {
-      navigate("confirmed");
-    }
-  };
-
-
-  const handleClick = () => {
-    navigate('/Gallery');
-  }
-
-  const initialOptions = {
-    "client-id": "AeAoUdddVyuyGm9-_loMbx_L7GNzHcRsRFu1KUu-LDzzs81FvBCOmoUi465med8ooCu5I_cbetOdeZV6",
-    currency: "USD",
-    intent: "capture"
-
-  }
-
-  const createOrder = (data, actions) => {
-
-    const totalAmount = bookingDetails && bookingDetails.totalPrice 
-    ? bookingDetails.totalPrice.toFixed(2): '0.00'; 
-
-    if (parseFloat(totalAmount) <= 0) {
-      console.error("The total amount must be greather than zero");
-      return;
-    }
-
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: totalAmount,
-          },
-        },
-      ],
-    });
-  };
-
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then((details) => {
-      console.log('Order ID:', data.orderID);
-      alert("Transaction completed by" + details.payer.name.given_name);
-    });
-  };
-  paypal.Buttons({
-    createOrder: createOrder,
-    onApprove: onApprove
-  }).render('#paypal-button-container');
-
-
-  const handleRoomNameChange = (e) => {
-    setNewRoomName(e.target.value);
-  };
-
-  const handleRoomNameSave = () => {
-    setBookingDetails((prevDetails) => ({
-      ...prevDetails,
-      roomType: newRoomName,
-    }));
-    setIsEditingRoom(false);
-  };
-
-  const handleEditClick = () => {
-    setIsEditingRoom(true);
-  }
-
-  return (
-
-
-    <>
-      <RoomNavbar />
-
-      <br />
-      <br />
-      <br />
-
-      <div className="calendar-container">
-        <div className="search-box">
-
-        
-
-
-          <div className="search-item">
-            <label>Check In</label>
-            <DatePicker
-              selected={selectedCheckInDate}
-              onChange={handleCheckInDateChange}
-              placeholderText="Select Check-In Date"
-            />
-
-          </div>
-          <div className="search-item">
-            <label>Check Out</label>
-            <DatePicker
-              selected={selectedCheckOutDate}
-              onChange={handleCheckOutDateChange}
-              placeholderText="Select Check-Out Date"
-            />
-          </div>
-
-          <div className="search-item">
-            <label>Room Qnty</label>
-            <input
-              type="number"
-              value={numberOfRooms}
-              onChange={(e) => dispatch(setNumberOfRooms(Number(e.target.value)))}
-              min="1"
-            />
-          </div>
-          <div className="search-item">
-            <label>No of Guests</label>
-            <input
-              type="number"
-              value={numberOfGuests}
-              onChange={(e) => dispatch(setNumberOfGuests(Number(e.target.value)))}
-              min="1"
-            />
-          </div>
-
-       
-        </div>
-
-      </div>
-
-
-      <div>
-
-        <br />
-        <br />
-        {bookingDetails && (
-          <div className="summary">
-
-<div className="search-item"> Hello
-            <span style={{ fontWeight: "bold", cursor: "pointer" }}
-              onClick={handleEmailClick}
-            >
-              ({user?.email || "Not logged in"})</span>    Here is your Booking Summary       
-              
-               </div>
-
-            <h4>Booking Summary</h4>
-
-            {isEditingRoom ? (
-              <div>
-                <input
-                  type="text"
-                  value={newRoomName}
-                  onChange={handleRoomNameChange}
-                  placeholder="Enter new room name"
-                />
-                <button onClick={handleRoomNameSave}>Save</button>
-              </div>
-            ) : (
-              <div>
-                <p>
-                  <strong>Room:</strong> {bookingDetails.roomType}
-                  <button onClick={handleEditClick}>Edit Room</button>
-                </p>
-              </div>
-            )}
+            setBookingDetails({
+                roomType: room.brand,
+                price: room.price,
+                totalPrice: calculatedTotalPrice,
+            });
+        } else {
+            console.error("No room data available");
+        }
+    }, [room, numberOfRooms]);
 
 
 
-            <p><strong>Price:</strong> {bookingDetails.price}</p>
-            <p><strong>Check-In Date:</strong> {selectedCheckInDate ? selectedCheckInDate.toDateString() : "Not selected"}</p>
-            <p><strong>Check-Out Date:</strong> {selectedCheckOutDate ? selectedCheckOutDate.toDateString() : "Not selected"}</p>
-            <p><strong>Total Price for {numberOfRooms} Room(s):</strong> {bookingDetails.totalPrice}</p>
-            <p><strong>Number of Guests:</strong> {numberOfGuests}</p>
 
-            <div className="modal-container">
 
-              <div className="icons-container">
-                <OrderConfirmed order={bookingDetails} />
-                <CancelOutlined
-                  size={40}
-                  onClick={handleConfirmOrder}
-                  className="cancel"
-                />
-              </div>
+    useEffect(() => {
+        if (bookingDetails) {
+            const calculatedTotalPrice = bookingDetails.price * numberOfRooms;
+            setBookingDetails(prev => ({
+                ...prev,
+                checkIn: selectedCheckInDate,
+                checkOut: selectedCheckOutDate,
+                numberOfRooms,
+                numberOfGuests,
+                totalPrice: calculatedTotalPrice,
+            }));
+        }
+    }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
 
-              <div className="paybtn">
 
-              <PayPalScriptProvider options={initialOptions}  >
+    useEffect(() => {
+        console.log(room);
+        if (room && typeof room.price === 'number') {
+            const calculatedTotalPrice = room.price * numberOfRooms;
+            setBookingDetails({
+                roomType: room.brand,
+                price: room.price,
+                totalPrice: calculatedTotalPrice,
+            });
+        } else {
+            console.error("Invalid room price or no room data available");
+        }
+    }, [room, numberOfRooms]);
 
-<PayPalButtons
-  createOrder={(data, actions) => {
-    const totalAmount = bookingDetails && bookingDetails.totalPrice
-          ? bookingDetails.totalPrice.toFixed(2)
-          : '0.00';
 
-        if (bookingDetails && parseFloat(totalAmount) <= 0) {
-          console.error("The total amount must be greater than zero");
-          return null; 
+    const createOrder = async (data, actions) => {
+        const totalAmount = bookingDetails?.totalPrice;
+        console.log('Booking Details:', bookingDetails);
+        if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
+            console.error("Invalid total amount:", totalAmount);
+            setError("Invalid total amount. Please check your booking details.");
+
+            return;
         }
 
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                currency_code: "USD",
-                value: totalAmount,
-              },
-            },
-          ],
-        });
-      }}
-      onApprove={async (data, actions) => {
-        const details = await actions.order.capture();
-        console.log('Order ID:', data.orderID);
-        alert("Transaction completed by " + details.payer.name.given_name);
-      }}
+        try {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        currency_code: "USD",
+                        value: totalAmount.toFixed(2),
+                    },
+                }],
+            }).then(order => {
+                console.log('Created Order ID:', order.id);
+                return order.id;
+            });
+        } catch (err) {
+            console.error('Error creating order:', err);
+            setError("An error occurred while creating your PayPal order. Please try again.");
+
+            throw err;
+        }
+    };
+
+    const onApprove = async (data, actions) => {
+        try {
+            const details = await actions.order.capture();
+            console.log('Transaction completed by', details.payer.name.given_name);
+            alert(`Transaction completed by ${details.payer.name.given_name}`);
+            navigate("/confirmed");
+        } catch (error) {
+            console.error('Error capturing order:', error);
+            setError("An error occurred while processing your payment. Please try again.");
+        }
+    };
+
+    return (
+        <>
+            <RoomNavbar />
+            <div>
+                <div className="calendar-container">
+                    <div className="search-box">
+                        <div className="search-item">
+                            <label>Check In</label>
+                            <DatePicker
+                                selected={selectedCheckInDate}
+                                onChange={date => {
+                                    setSelectedCheckInDate(date);
+                                    dispatch(setCheckInDate(date ? date.toISOString() : null));
+                                }}
+                                placeholderText="Select Check-In Date"
+                            />
+                        </div>
+                        <div className="search-item">
+                            <label>Check Out</label>
+                            <DatePicker
+                                selected={selectedCheckOutDate}
+                                onChange={date => {
+                                    setSelectedCheckOutDate(date);
+                                    dispatch(setCheckOutDate(date ? date.toISOString() : null));
+                                }}
+                                placeholderText="Select Check-Out Date"
+                            />
+                        </div>
+                        <div className="search-item">
+                            <label>Room Qnty</label>
+                            <input
+                                type="number"
+                                value={numberOfRooms}
+                                onChange={e => dispatch(setNumberOfRooms(Number(e.target.value)))}
+                                min="1"
+                            />
+                        </div>
+                        <div className="search-item">
+                            <label>No of Guests</label>
+                            <input
+                                type="number"
+                                value={numberOfGuests}
+                                onChange={e => dispatch(setNumberOfGuests(Number(e.target.value)))}
+                                min="1"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                {bookingDetails && (
+                    <div className="summary">
+                        \
+                        <h4>Booking Summary</h4>
+                        <p><strong>Room:</strong> {bookingDetails.roomType}</p>
+                        <p><strong>Check-In Date:</strong> {selectedCheckInDate ? selectedCheckInDate.toDateString() : "Not selected"}</p>
+                        <p><strong>Check-Out Date:</strong> {selectedCheckOutDate ? selectedCheckOutDate.toDateString() : "Not selected"}</p>
+                        <p><strong>Total Price for {numberOfRooms} Room(s):</strong> ${bookingDetails.totalPrice?.toFixed(2) || "0.00"}</p>
+                        <p><strong>Number of Guests:</strong> {numberOfGuests}</p>
 
 
 
-/>
-</PayPalScriptProvider>
-              </div>
-
-<div>
-  <BookingPage/>
-</div>
-              
-
-
+                        <h2>Proceed With Payment </h2>
+                        {error && <div style={{ color: "red" }}>{error}</div>}
+                        <PayPalScriptProvider options={{ clientId: "AeAoUdddVyuyGm9-_loMbx_L7GNzHcRsRFu1KUu-LDzzs81FvBCOmoUi465med8ooCu5I_cbetOdeZV6" }}>
+                            <PayPalButtons
+                                createOrder={createOrder}
+                                onApprove={onApprove}
+                            />
+                        </PayPalScriptProvider>
+                    </div>
+                )}
+                <Footer />
             </div>
-          </div>
-        )}
-      </div>
-
-
-
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
-      <br />
-      <div className="section">
-        <h3></h3>
-        <footer className="footer">
-          <div className="container">
-            <div className="footer-content">
-              <p>920 Zane Isle, Lebsackfurt, 38755</p>
-              <p>(207) 555-0136</p>
-              <a href="mailto:jaro@example.com">jaro@gmail.com</a>
-            </div>
-            <div className="footer-socials">
-              <a href="#" target="_blank" aria-label="Facebook"><i className="fab fa-facebook-f">Facebook</i></a>
-              <a href="#" target="_blank" aria-label="Instagram"><i className="fab fa-instagram">Instagram</i></a>
-            </div>
-          </div>
-        </footer>
-      </div>
-
-
-
-
-
-    </>
-  );
+        </>
+    );
 };
 
 export default DatePickerWithLayout;

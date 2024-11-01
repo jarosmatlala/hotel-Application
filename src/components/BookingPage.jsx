@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import OrderConfirmed from "./OrderConfirmed"; // Import the child component (modal)
+import OrderConfirmed from "./OrderConfirmed"; 
 
 function BookingPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Controls modal visibility
-  const [order, setOrder] = useState(null); // Holds the order details
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [order, setOrder] = useState(null); 
 
-  // Function that simulates successful payment
   const handlePaymentSuccess = () => {
     const orderDetails = {
       id: "001",
@@ -15,21 +14,18 @@ function BookingPage() {
       price: 500,
     };
 
-    setOrder(orderDetails); // Set the order details after payment
-    setIsModalOpen(true); // Show the modal
+    setOrder(orderDetails); 
+    setIsModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
-    setIsModalOpen(false); // Hide the modal
+    setIsModalOpen(false); 
   };
 
   return (
     <div>
-      {/* Button to simulate completing payment */}
       <button onClick={handlePaymentSuccess}>Complete Payment</button>
 
-      {/* Conditionally render the modal when isModalOpen is true */}
       {isModalOpen && <OrderConfirmed order={order} onClose={closeModal} />}
     </div>
   );

@@ -24,13 +24,7 @@ const AccNav = () => {
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
 
 
-          <li className="nav-item">
-            <a href="/Acc" className="nav-links">Accomodation</a>
-          </li>
-         
-          {/* <li className="nav-item">
-            <a href="/Registration" className="nav-links">Contact Us</a>
-          </li> */}
+     
 
           <li className="nav-item">
             <a href="/Gallery" className="nav-links">Gallery</a>
@@ -39,9 +33,7 @@ const AccNav = () => {
           <li className="nav-item">
             <a href="/Contact" className="nav-links">Contact Us</a>
           </li>
-          <li className="nav-item">
-            <a href="/Date" className="nav-links">Book-Now</a>
-          </li>
+       
          
         </ul>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Navbar.css'; 
+import LOGO from "../assets/images/LOGO.png";
 
 const GalleryNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,19 +12,16 @@ const GalleryNav = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <h1 className="logo"> </h1>
+      <img src={LOGO} alt="Landing" className="logo" />
         <div className="menu-icon" onClick={toggleMenu}>
         </div>
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
-            <a href="/Acc" className="nav-links">Accomodation</a>
+            <a href="/" className="nav-links">Accomodation</a>
           </li>
          
           <li className="nav-item">
-            <a href="/Registration" className="nav-links">Contact Us</a>
-          </li>
-          <li className="nav-item">
-            <a href="/Date" className="nav-links">Book-Now</a>
+            <a href="/Contact" className="nav-links">Contact Us</a>
           </li>
          
         </ul>
