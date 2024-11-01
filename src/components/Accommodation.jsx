@@ -33,15 +33,34 @@ const Accomodation = () => {
     if (!user) {
       navigate('/Login'); 
       return;
+      
     } 
-    
-    const simplifiedRoom = {
-      id: room.id,
-      brand: room.brand,
-      price: room.price,
-    };
 
-    navigate('/Login/Paypal', { state: { room: simplifiedRoom} });
+    
+    const handleBook = (room) => {
+      console.log('Room being booked:', room); 
+  
+      if (room && room.brand && typeof room.price === 'number') {
+          navigate('/DatePickerWithLayout', { state: { room } });
+      } else {
+          console.error("Invalid room data:", room);
+      }
+  };
+  
+
+
+
+
+    
+    // const simplifiedRoom = {
+    //   id: room.id,
+    //   brand: room.brand,
+    //   price: room.price,
+    // };
+
+
+
+    navigate('/DatePickerWithLayout', { state: { room: simplifiedRoom} });
   };
     
     const handleTroom = () => navigate('/Troom');

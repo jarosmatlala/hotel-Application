@@ -1,4 +1,3 @@
-// PayPalPayment.js
 import React from 'react';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
@@ -6,7 +5,7 @@ const PayPalPayment = ({ totalAmount, onApprove }) => {
     const createOrder = async (data, actions) => {
         if (parseFloat(totalAmount) <= 0) {
             console.error("The total amount must be greater than zero");
-            return; // Prevent order creation
+            return; 
         }
 
         return actions.order.create({

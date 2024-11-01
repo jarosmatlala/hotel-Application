@@ -17,7 +17,8 @@ import { setNumberOfRooms, setNumberOfGuests, setCheckInDate, setCheckOutDate } 
 
 const DatePickerWithLayout = () => {
     const location = useLocation();
-    const { room } = location.state || {};
+    const room = location.state?.room;
+    // const { room } = location.state || {};
     const [selectedCheckInDate, setSelectedCheckInDate] = useState(null);
     const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(null);
     const [bookingDetails, setBookingDetails] = useState(null);
@@ -36,7 +37,10 @@ const DatePickerWithLayout = () => {
 
     useEffect(() => {
       if (room) {
+        console.log('Room Data:', room);
           const calculatedTotalPrice = room.price * numberOfRooms; 
+          console.log('Calculated Total Price:', calculatedTotalPrice);
+
           setBookingDetails({
               roomType: room.brand, 
               price: room.price,
@@ -79,19 +83,39 @@ useEffect(() => {
     //     }
     // }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
 
-    const createOrder = async (data, actions) => {
-        const totalAmount = bookingDetails?.totalPrice?.toFixed(2) || '0.00';
 
-        if (parseFloat(totalAmount) <= 0) {
-            console.error("The total amount must be greater than zero");
-            return; 
-        }
+    useEffect(() => {
+      if (room && typeof room.price === 'number') {
+          const calculatedTotalPrice = room.price * numberOfRooms;
+          setBookingDetails({
+              roomType: room.brand,
+              price: room.price,
+              totalPrice: calculatedTotalPrice,
+          });
+      } else {
+          console.error("Invalid room price or no room data available");
+      }
+  }, [room, numberOfRooms]);
+  
+
+    const createOrder = async (data, actions) => {
+        const totalAmount = bookingDetails?.totalPrice;
+
+        // if (parseFloat(totalAmount) <= 0) {
+        //     console.error("The total amount must be greater than zero");
+        //     return; 
+        // }
+
+        if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
+          console.error("Invalid total amount:", totalAmount);
+          return; 
+      }
 
         return actions.order.create({
             purchase_units: [{
                 amount: {
                     currency_code: "USD",
-                    value: totalAmount,
+                    value: totalAmount.toFixed(2),
                 },
             }],
         }).then(order => {
