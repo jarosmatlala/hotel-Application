@@ -85,6 +85,7 @@ useEffect(() => {
 
 
     useEffect(() => {
+        console.log(room);
       if (room && typeof room.price === 'number') {
           const calculatedTotalPrice = room.price * numberOfRooms;
           setBookingDetails({
@@ -101,10 +102,7 @@ useEffect(() => {
     const createOrder = async (data, actions) => {
         const totalAmount = bookingDetails?.totalPrice;
 
-        // if (parseFloat(totalAmount) <= 0) {
-        //     console.error("The total amount must be greater than zero");
-        //     return; 
-        // }
+        
 
         if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
           console.error("Invalid total amount:", totalAmount);

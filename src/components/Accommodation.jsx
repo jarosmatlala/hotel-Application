@@ -29,39 +29,55 @@ const Accomodation = () => {
     fetchRooms(); 
   }, []);
 
-  const handleBook = (room) => {
-    if (!user) {
-      navigate('/Login'); 
-      return;
+  // const handleBook = (room) => {
+  //   if (!user) {
+  //     navigate('/Login'); 
+  //     return;
       
-    } 
+  //   } 
 
-    
-    const handleBook = (room) => {
-      console.log('Room being booked:', room); 
-  
-      if (room && room.brand && typeof room.price === 'number') {
-          navigate('/DatePickerWithLayout', { state: { room } });
-      } else {
-          console.error("Invalid room data:", room);
-      }
-  };
+     
+  //     if (room && room.brand && typeof room.price === 'number') {
+  //         navigate('/DatePickerWithLayout', { state: { room } });
+  //     } else {
+  //         console.error("Invalid room data:", room);
+  //     }
+  // };
   
 
 
 
 
     
-    // const simplifiedRoom = {
-    //   id: room.id,
-    //   brand: room.brand,
-    //   price: room.price,
-    // };
+  //   const simplifiedRoom = {
+  //     id: room.id,
+  //     brand: room.brand,
+  //     price: room.price,
+  //   };
 
 
 
-    navigate('/DatePickerWithLayout', { state: { room: simplifiedRoom} });
-  };
+  //   navigate('./Login', { state: { room: simplifiedRoom} });
+  // };
+
+  const handleBook = (room) => {
+    console.log('Room being booked:', room); 
+    if (!user) 
+      { navigate('/Login', { state: { room } }); 
+    return; } 
+    
+    if (room && room.brand && typeof room.price === 'number')
+       { const simplifiedRoom = { 
+        id: room.id, 
+        brand: room.brand, 
+        price: room.price,
+       };
+        navigate('/DatePickerWithLayout', { state: { room: simplifiedRoom } }); 
+      }      
+         else { 
+          console.error("Invalid room data:", room); 
+        }
+       };
     
     const handleTroom = () => navigate('/Troom');
   const handleBroom = () => navigate('/Broom');
@@ -69,7 +85,7 @@ const Accomodation = () => {
   const handleProom = () => navigate('/Proom');
   const handleDroom = () => navigate('/Droom');
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <>
@@ -92,7 +108,7 @@ const Accomodation = () => {
 
                 <p className="room-available">{room.available ? 'Available' : 'Not Available'}</p>
                 {/* <button className="book-now-btn" onClick={handleBook}>VIEW</button> */}
-                <button className="book-now-btn" onClick={handleBook}>BOOK</button>
+                <button className="book-now-btn" onClick={() => handleBook(room)}>BOOK</button>
 
               </div>
             ))}

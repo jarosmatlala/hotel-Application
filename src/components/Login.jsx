@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
-import GoogleButton from "react-google-button";
+// import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
 import "./login.css";
 
@@ -10,24 +10,30 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const { logIn, googleSignIn } = useUserAuth();
+    const { logIn } = useUserAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         try {
             await logIn(email, password);
-            navigate("Paypal");
+            const room = location.state?.room;
+            if (room) { navigate('/DatePickerWithLayout', { state: { room } });
+        }else{
+            navigate('/');
+        }
         } catch (err) {
             setError(err.message);
         }
     };
 
 
-    const handleGoogleSignIn = async () => {
-        e.preventDefault();
-    };
+    // const handleGoogleSignIn = async () => {
+    //     e.preventDefault();
+    // };
 
     return (
         <>
