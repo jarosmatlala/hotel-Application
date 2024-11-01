@@ -7,12 +7,14 @@ import './Navbar.css';
 import './Accommodation.css';
 import AccNav from "./AccNav";
 import Footer from "./Footer";
-import Landing from "../assets/images/Landing.webp";
+  // import Landing from "../assets/images/Landing.webp";
 import Velmor1 from "../assets/images/Velmor1.webp"
 
 const Accomodation = () => {
   const [rooms, setRooms] = useState([]); 
   const navigate = useNavigate();
+  const { user } = useUserAuth();
+
 
   const fetchRooms = async () => {
     const querySnapshot = await getDocs(collection(db, "room")); 
@@ -27,14 +29,27 @@ const Accomodation = () => {
     fetchRooms(); 
   }, []);
 
-  const handleBook = () => navigate('/Droom');
-  const handleTroom = () => navigate('/Troom');
+  const handleBook = (room) => {
+    if (!user) {
+      navigate('/Login'); 
+      return;
+    } 
+    
+    const simplifiedRoom = {
+      id: room.id,
+      brand: room.brand,
+      price: room.price,
+    };
+
+    navigate('/Login/Paypal', { state: { room: simplifiedRoom} });
+  };
+    
+    const handleTroom = () => navigate('/Troom');
   const handleBroom = () => navigate('/Broom');
   const handleHroom = () => navigate('/Hroom');
   const handleProom = () => navigate('/Proom');
   const handleDroom = () => navigate('/Droom');
 
-  const { user } = useUserAuth();
   console.log(user);
 
   return (
@@ -53,8 +68,13 @@ const Accomodation = () => {
                 {room.images && room.images.map((image, index) => (
                   <img key={index} src={image} alt={room.description} className="landing-image" />
                 ))}
-                <p className="room-description">{room.description}</p> 
-                <button className="book-now-btn" onClick={handleBook}>VIEW</button>
+                <p className="room-description">{room.description}</p>
+                <p className="room-description">R{room.price}</p>
+
+                <p className="room-available">{room.available ? 'Available' : 'Not Available'}</p>
+                {/* <button className="book-now-btn" onClick={handleBook}>VIEW</button> */}
+                <button className="book-now-btn" onClick={handleBook}>BOOK</button>
+
               </div>
             ))}
           </div>

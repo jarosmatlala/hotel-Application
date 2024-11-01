@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom"; // Import useLocation
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DatePickerStyles.css";
@@ -12,12 +13,11 @@ import { CancelOutlined } from "@mui/icons-material";
 import OrderConfirmed from "./OrderConfirmed";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation} from "react-router-dom";
 import { setNumberOfRooms, setNumberOfGuests, setCheckInDate, setCheckOutDate } from '../redux/bookingSlice';
 
 const DatePickerWithLayout = () => {
     const location = useLocation();
-    const { room } = location.state || {};
+    const { room } = location.state || {}; // Get room info from location state
     const [selectedCheckInDate, setSelectedCheckInDate] = useState(null);
     const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(null);
     const [bookingDetails, setBookingDetails] = useState(null);
@@ -35,56 +35,36 @@ const DatePickerWithLayout = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-      if (room) {
-          const calculatedTotalPrice = room.price * numberOfRooms; 
-          setBookingDetails({
-              roomType: room.brand, 
-              price: room.price,
-              totalPrice: calculatedTotalPrice,
-          });
-      }else {
-        console.error("No room data available");
-    }
-  }, [room, numberOfRooms]);
+        if (room) {
+            const calculatedTotalPrice = room.price * numberOfRooms; // Use the selected room's price
+            setBookingDetails({
+                roomType: room.brand, // Use room brand
+                price: room.price,
+                totalPrice: calculatedTotalPrice,
+            });
+        }
+    }, [room, numberOfRooms]);
 
-
-
-
-
-useEffect(() => {
-    if (bookingDetails) {
-        const calculatedTotalPrice = bookingDetails.price * numberOfRooms; 
-        setBookingDetails(prev =>({
-          ...prev,
-          checkIn: selectedCheckInDate,
-          checkOut: selectedCheckOutDate,
-          numberOfRooms,
-          numberOfGuests,
-          totalPrice: calculatedTotalPrice,
-        }));
-    }
-  }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
-
-    // useEffect(() => {
-    //     if (bookingDetails) {
-    //         const calculatedTotalPrice = bookingDetails.price * numberOfRooms;
-    //         setBookingDetails(prev => ({
-    //             ...prev,
-    //             checkIn: selectedCheckInDate,
-    //             checkOut: selectedCheckOutDate,
-    //             numberOfRooms,
-    //             numberOfGuests,
-    //             totalPrice: calculatedTotalPrice,
-    //         }));
-    //     }
-    // }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
+    useEffect(() => {
+        if (bookingDetails) {
+            const calculatedTotalPrice = bookingDetails.price * numberOfRooms;
+            setBookingDetails(prev => ({
+                ...prev,
+                checkIn: selectedCheckInDate,
+                checkOut: selectedCheckOutDate,
+                numberOfRooms,
+                numberOfGuests,
+                totalPrice: calculatedTotalPrice,
+            }));
+        }
+    }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
 
     const createOrder = async (data, actions) => {
         const totalAmount = bookingDetails?.totalPrice?.toFixed(2) || '0.00';
 
         if (parseFloat(totalAmount) <= 0) {
             console.error("The total amount must be greater than zero");
-            return; 
+            return;
         }
 
         return actions.order.create({
@@ -168,38 +148,15 @@ useEffect(() => {
                 <br />
                 {bookingDetails && (
                     <div className="summary">
-                        {/* <div className="search-item"> 
+                        <div className="search-item"> 
                             <span style={{ fontWeight: "bold", cursor: "pointer" }}>
                                 {user?.email || "Not logged in"}
                             </span> 
                             Here is your Booking Summary
-                        </div> */}
+                        </div>
                         <h4>Booking Summary</h4>
                         <p><strong>Room:</strong> {bookingDetails.roomType}</p>
                         <p><strong>Check-In Date:</strong> {selectedCheckInDate ? selectedCheckInDate.toDateString() : "Not selected"}</p>
                         <p><strong>Check-Out Date:</strong> {selectedCheckOutDate ? selectedCheckOutDate.toDateString() : "Not selected"}</p>
                         <p><strong>Total Price for {numberOfRooms} Room(s):</strong> ${bookingDetails.totalPrice?.toFixed(2) || "0.00"}</p>
-                        <p><strong>Number of Guests:</strong> {numberOfGuests}</p>
-
-                        {/* <div className="icons-container">
-                            <OrderConfirmed order={bookingDetails} />
-                            <CancelOutlined size={40} onClick={() => console.log("Order confirmed")} className="cancel" />
-                        </div> */}
-
-                        <h2>PayPal Payment</h2>
-                        {error && <div style={{ color: "red" }}>{error}</div>}
-                        <PayPalScriptProvider options={{ clientId: "AeAoUdddVyuyGm9-_loMbx_L7GNzHcRsRFu1KUu-LDzzs81FvBCOmoUi465med8ooCu5I_cbetOdeZV6" }}>
-                            <PayPalButtons
-                                createOrder={createOrder}
-                                onApprove={onApprove}
-                            />
-                        </PayPalScriptProvider>
-                    </div>
-                )}
-                <Footer />
-            </div>
-        </>
-    );
-};
-
-export default DatePickerWithLayout;
+                        <p><strong>Number of Guests:</strong> {numberOfGuests}</
