@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Link, useNavigate,useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
-// import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
 import "./login.css";
 
@@ -21,19 +20,15 @@ const Login = () => {
         try {
             await logIn(email, password);
             const room = location.state?.room;
-            if (room) { navigate('/DatePickerWithLayout', { state: { room } });
-        }else{
-            navigate('/');
-        }
+            if (room) {
+                navigate('/DatePickerWithLayout', { state: { room } });
+            } else {
+                navigate('Home');
+            }
         } catch (err) {
             setError(err.message);
         }
     };
-
-
-    // const handleGoogleSignIn = async () => {
-    //     e.preventDefault();
-    // };
 
     return (
         <>
@@ -73,14 +68,13 @@ const Login = () => {
                             <Link to="/forgot-password">Forgot Password</Link>
                         </div>
                         <div className="box">
-                            Dont have an account ? <Link to="/Signup">Sign up</Link>
+                            Dont have an account ? <Link to="Signup">Sign up</Link>
                         </div>
                     </Form>
                     <hr />
                 </div>
 
 
-                {/* <GoogleButton className="gbtn" type="dark" onClick={handleGoogleSignIn} /> */}
             </div>
 
 

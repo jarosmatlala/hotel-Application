@@ -4,6 +4,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import './Gallery.css';
 import GalleryNav from "./GalleryNav";
+import Footer from "./Footer";
+
 
 const Gallery = () => {
     const navigate = useNavigate();
@@ -49,6 +51,7 @@ const Gallery = () => {
                     </div>
                 ))}
             </div>
+            <Footer/>
         </>
     );
 };
@@ -59,9 +62,11 @@ const RoomCard = ({ roomType, price, image,  onSelect }) => (
             <img src={image} alt={roomType} className="room-image" />
             <div className="room-title">{roomType}</div>
         </div>
-        <button className="book-now-btn" onClick={() => onSelect(roomType, price)}>BOOK NOW</button>
+        {/* <button className="book-now-btn" onClick={() => onSelect(roomType, price)}>BOOK NOW</button> */}
         {/* <button className="book-now-btn">{price}</button> */}
     </div>
 );
+
+
 
 export default Gallery;

@@ -12,13 +12,12 @@ import { CancelOutlined } from "@mui/icons-material";
 import OrderConfirmed from "./OrderConfirmed";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { setNumberOfRooms, setNumberOfGuests, setCheckInDate, setCheckOutDate } from '../redux/bookingSlice';
 
 const DatePickerWithLayout = () => {
     const location = useLocation();
     const room = location.state?.room;
-    // const { room } = location.state || {};
     const [selectedCheckInDate, setSelectedCheckInDate] = useState(null);
     const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(null);
     const [bookingDetails, setBookingDetails] = useState(null);
@@ -36,93 +35,83 @@ const DatePickerWithLayout = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-      if (room) {
-        console.log('Room Data:', room);
-          const calculatedTotalPrice = room.price * numberOfRooms; 
-          console.log('Calculated Total Price:', calculatedTotalPrice);
+        if (room) {
+            console.log('Room Data:', room);
+            const calculatedTotalPrice = room.price * numberOfRooms;
+            console.log('Calculated Total Price:', calculatedTotalPrice);
 
-          setBookingDetails({
-              roomType: room.brand, 
-              price: room.price,
-              totalPrice: calculatedTotalPrice,
-          });
-      }else {
-        console.error("No room data available");
-    }
-  }, [room, numberOfRooms]);
-
-
+            setBookingDetails({
+                roomType: room.brand,
+                price: room.price,
+                totalPrice: calculatedTotalPrice,
+            });
+        } else {
+            console.error("No room data available");
+        }
+    }, [room, numberOfRooms]);
 
 
 
-useEffect(() => {
-    if (bookingDetails) {
-        const calculatedTotalPrice = bookingDetails.price * numberOfRooms; 
-        setBookingDetails(prev =>({
-          ...prev,
-          checkIn: selectedCheckInDate,
-          checkOut: selectedCheckOutDate,
-          numberOfRooms,
-          numberOfGuests,
-          totalPrice: calculatedTotalPrice,
-        }));
-    }
-  }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
 
-    // useEffect(() => {
-    //     if (bookingDetails) {
-    //         const calculatedTotalPrice = bookingDetails.price * numberOfRooms;
-    //         setBookingDetails(prev => ({
-    //             ...prev,
-    //             checkIn: selectedCheckInDate,
-    //             checkOut: selectedCheckOutDate,
-    //             numberOfRooms,
-    //             numberOfGuests,
-    //             totalPrice: calculatedTotalPrice,
-    //         }));
-    //     }
-    // }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
+
+    useEffect(() => {
+        if (bookingDetails) {
+            const calculatedTotalPrice = bookingDetails.price * numberOfRooms;
+            setBookingDetails(prev => ({
+                ...prev,
+                checkIn: selectedCheckInDate,
+                checkOut: selectedCheckOutDate,
+                numberOfRooms,
+                numberOfGuests,
+                totalPrice: calculatedTotalPrice,
+            }));
+        }
+    }, [selectedCheckInDate, selectedCheckOutDate, numberOfRooms, numberOfGuests]);
 
 
     useEffect(() => {
         console.log(room);
-      if (room && typeof room.price === 'number') {
-          const calculatedTotalPrice = room.price * numberOfRooms;
-          setBookingDetails({
-              roomType: room.brand,
-              price: room.price,
-              totalPrice: calculatedTotalPrice,
-          });
-      } else {
-          console.error("Invalid room price or no room data available");
-      }
-  }, [room, numberOfRooms]);
-  
+        if (room && typeof room.price === 'number') {
+            const calculatedTotalPrice = room.price * numberOfRooms;
+            setBookingDetails({
+                roomType: room.brand,
+                price: room.price,
+                totalPrice: calculatedTotalPrice,
+            });
+        } else {
+            console.error("Invalid room price or no room data available");
+        }
+    }, [room, numberOfRooms]);
+
 
     const createOrder = async (data, actions) => {
         const totalAmount = bookingDetails?.totalPrice;
-
-        
-
+        console.log('Booking Details:', bookingDetails);
         if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
-          console.error("Invalid total amount:", totalAmount);
-          return; 
-      }
+            console.error("Invalid total amount:", totalAmount);
+            setError("Invalid total amount. Please check your booking details.");
 
-        return actions.order.create({
-            purchase_units: [{
-                amount: {
-                    currency_code: "USD",
-                    value: totalAmount.toFixed(2),
-                },
-            }],
-        }).then(order => {
-            console.log('Created Order ID:', order.id);
-            return order.id; 
-        }).catch(err => {
+            return;
+        }
+
+        try {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        currency_code: "USD",
+                        value: totalAmount.toFixed(2),
+                    },
+                }],
+            }).then(order => {
+                console.log('Created Order ID:', order.id);
+                return order.id;
+            });
+        } catch (err) {
             console.error('Error creating order:', err);
-            throw err; 
-        });
+            setError("An error occurred while creating your PayPal order. Please try again.");
+
+            throw err;
+        }
     };
 
     const onApprove = async (data, actions) => {
@@ -190,12 +179,7 @@ useEffect(() => {
                 <br />
                 {bookingDetails && (
                     <div className="summary">
-                        {/* <div className="search-item"> 
-                            <span style={{ fontWeight: "bold", cursor: "pointer" }}>
-                                {user?.email || "Not logged in"}
-                            </span> 
-                            Here is your Booking Summary
-                        </div> */}
+                        \
                         <h4>Booking Summary</h4>
                         <p><strong>Room:</strong> {bookingDetails.roomType}</p>
                         <p><strong>Check-In Date:</strong> {selectedCheckInDate ? selectedCheckInDate.toDateString() : "Not selected"}</p>
@@ -203,10 +187,7 @@ useEffect(() => {
                         <p><strong>Total Price for {numberOfRooms} Room(s):</strong> ${bookingDetails.totalPrice?.toFixed(2) || "0.00"}</p>
                         <p><strong>Number of Guests:</strong> {numberOfGuests}</p>
 
-                        {/* <div className="icons-container">
-                            <OrderConfirmed order={bookingDetails} />
-                            <CancelOutlined size={40} onClick={() => console.log("Order confirmed")} className="cancel" />
-                        </div> */}
+
 
                         <h2>PayPal Payment</h2>
                         {error && <div style={{ color: "red" }}>{error}</div>}
