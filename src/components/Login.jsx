@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
-
-
+import "./login.css";
 
 const Login = () => {
 
@@ -67,17 +66,17 @@ const Login = () => {
                         <div>
                             <Link to="/forgot-password">Forgot Password</Link>
                         </div>
-
+                        <div className="box">
+                Dont have an account ? <Link to="/Signup">Sign up</Link>
+            </div>
                     </Form>
                     <hr />
                 </div>
 
 
-                <GoogleButton className="gbtn" type="dark" onClick={handleGoogleSignIn} />
+                {/* <GoogleButton className="gbtn" type="dark" onClick={handleGoogleSignIn} /> */}
             </div>
-            <div className="box">
-                Dont have an account ? <Link to="/Signup">Sign up</Link>
-            </div>
+           
 
         </>
     );

@@ -1,72 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
-import './Gallery.css';
-import GalleryNav from "./GalleryNav";
+import React from 'react';
+import './Contact.css';
+import AccNav from "./AccNav";
 
-const Gallery = () => {
-    const [suites, setSuites] = useState([]); // State to store suites data
-    const navigate = useNavigate();
-
-    // Fetch suites data from Firestore
-    const fetchSuites = async () => {
-        const querySnapshot = await getDocs(collection(db, "suites"));
-        const suitesData = [];
-        querySnapshot.forEach((doc) => {
-            suitesData.push({ id: doc.id, ...doc.data() }); 
-        });
-        setSuites(suitesData);
-    };
-
-    useEffect(() => {
-        fetchSuites();
-    }, []);
-
-    const handleRoomSelection = (roomType, price) => {
-        const roomDetails = {
-            roomType,
-            price,
-            userId: "unique-user-id", 
-        };
-        navigate('/Droom', { state: roomDetails });
-    };
-
-    return (
-        <>
-            <GalleryNav />
-            <div className="gallery-container">
-                {suites.map((suite) => (
-                    <div key={suite.id} className="gallery-section">
-                        <h3 className="gallery-title">{suite.roomType}</h3>
-                        <div className="gallery-grid">
-                            {suite.images && suite.images.map((image, index) => (
-                                <RoomCard 
-                                    key={index}
-                                    roomType={suite.roomType}
-                                    price={suite.price}
-                                    image={image}
-                                    onSelect={handleRoomSelection}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </>
-    );
+const Contact = () => {
+  return (
+    <div className="contact-container">
+      <AccNav />
+      <header className="contact-header">
+      </header>
+      <section className="contact-info">
+        <h1>WE ARE HERE FOR YOU</h1>
+        <p>
+          Do you have any enquiries, complaints or requests? Please forward them to our support desk and we will get back to you as soon as possible.
+        </p>
+        <div className="contact-details">
+          <p>920 ZONE 16 GA-RANKUWA<br />RRAMOKOKA STREET<br />0208</p>
+          <p>Phone: +44 345 678 903</p>
+        </div>
+        <form className="contact-form">
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email Address" required />
+          <textarea placeholder="Message" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
+      <section className="map-section">
+        <img src="map-placeholder.png" alt="Location Map" className="location-map" />
+      </section>
+    </div>
+  );
 };
 
-// RoomCard component for displaying individual room information
-const RoomCard = ({ roomType, price, image, onSelect }) => (
-    <div className="room-card">
-        <div className="room-image-container">
-            <img src={image} alt={roomType} className="room-image" />
-            <div className="room-title">{roomType}</div>
-        </div>
-        <button className="book-now-btn" onClick={() => onSelect(roomType, price)}>VIEW</button>
-        <button className="book-now-btn">{price}</button>
-    </div>
-);
-
-export default Gallery;
+export default Contact;
