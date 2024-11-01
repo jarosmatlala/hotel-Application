@@ -26,20 +26,19 @@ body {
 .contact-info {
   text-align: center;
   padding: 50px 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Added darker background for contrast */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly darker shadow */
+  background-color: rgba(0, 0, 0, 0.5); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 .contact-info h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
-  color: #fff; /* Changed to white for better contrast */
+  color: #fff; 
 }
 
 .contact-info p {
   font-size: 1.2em;
-  color: #ccc; /* Lighter shade for subtext */
+  color: #ccc; 
 }
 
 .contact-details {
@@ -55,10 +54,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6); /* Darker background for form */
+  background-color: rgba(0, 0, 0, 0.6); 
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly darker shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
   margin-top: 20px;
 }
 
@@ -92,9 +91,9 @@ body {
   text-align: center;
   padding: 20px;
   margin-top: 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Added darker background for contrast */
+  background-color: rgba(0, 0, 0, 0.5); 
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly darker shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 .location-map {

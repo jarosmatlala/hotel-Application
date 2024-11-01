@@ -31,7 +31,7 @@ const Login = () => {
 
     return (
         <>
-            <div>
+            <div className="auth-container">
                 <div className="p">
                     <br />
                     <br />
@@ -47,9 +47,9 @@ const Login = () => {
                                 type="email"
                                 placeholder="Email address"
                                 onChange={(e) => setEmail(e.target.value)} />
-                              </Form.Group>  
+                        </Form.Group>
 
-                              <Form.Group className="h2" controlId="formPassword">
+                        <Form.Group className="h2" controlId="formPassword">
                             <Form.Control
                                 type="password" placeholder="Password"
                                 onChange={(e) => setPassword(e.target.value)} />
@@ -67,8 +67,8 @@ const Login = () => {
                             <Link to="/forgot-password">Forgot Password</Link>
                         </div>
                         <div className="box">
-                Dont have an account ? <Link to="/Signup">Sign up</Link>
-            </div>
+                            Dont have an account ? <Link to="/Signup">Sign up</Link>
+                        </div>
                     </Form>
                     <hr />
                 </div>
@@ -76,7 +76,7 @@ const Login = () => {
 
                 {/* <GoogleButton className="gbtn" type="dark" onClick={handleGoogleSignIn} /> */}
             </div>
-           
+
 
         </>
     );

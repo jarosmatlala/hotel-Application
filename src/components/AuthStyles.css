@@ -1,22 +1,19 @@
-/* Main container styling */
 .auth-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: url('../assets/images/elegance5.jpg'); /* Add your hotel-themed image path here */
+    background-image: url('../assets/images/elegance5.jpg'); 
     background-size: cover;
     background-position: center;
     padding: 20px;
-    color: #fff; /* White text for elegance */
+    color: #fff; 
     font-family: Arial, sans-serif;
 }
 
-/* Form container styling */
 .auth-form {
-    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white for overlay effect */
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.9); 
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     max-width: 400px;
@@ -24,7 +21,6 @@
     text-align: center;
 }
 
-/* Heading styling */
 .auth-form h2 {
     font-size: 2em;
     font-weight: bold;
@@ -32,7 +28,6 @@
     margin-bottom: 20px;
 }
 
-/* Input field styling */
 .auth-form .form-control {
     margin: 10px 0;
     padding: 15px;
@@ -41,9 +36,8 @@
     border: 1px solid #ddd;
 }
 
-/* Button styling */
 .auth-form .btn-primary {
-    background-color: #d4af37; /* Gold color for a luxurious feel */
+    background-color: #d4af37; 
     border: none;
     width: 100%;
     padding: 10px;
@@ -56,18 +50,16 @@
 }
 
 .auth-form .btn-primary:hover {
-    background-color: #b7950b; /* Darker gold on hover */
+    background-color: #b7950b; 
     color: #fff;
 }
 
-/* Google Button */
 .auth-form .gbtn {
     width: 100%;
     margin-top: 15px;
     border-radius: 5px;
 }
 
-/* Link styling */
 .auth-form a {
     color: #2c3e50;
     text-decoration: underline;
@@ -77,7 +69,6 @@
     color: #d4af37;
 }
 
-/* Error message styling */
 .alert-danger {
     color: #c0392b;
     font-weight: bold;
@@ -89,7 +80,6 @@
     text-align: center;
 }
 
-/* Text for navigation */
 .auth-navigation {
     margin-top: 20px;
     font-size: 1em;

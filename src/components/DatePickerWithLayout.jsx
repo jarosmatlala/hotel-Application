@@ -114,7 +114,8 @@ function DatePickerWithLayout() {
   const initialOptions = {
     "client-id": "AeAoUdddVyuyGm9-_loMbx_L7GNzHcRsRFu1KUu-LDzzs81FvBCOmoUi465med8ooCu5I_cbetOdeZV6",
     currency: "USD",
-    intent: "capture"
+    intent: "capture",
+    env: "sandbox"
 
   }
 
@@ -137,7 +138,17 @@ function DatePickerWithLayout() {
           },
         },
       ],
-    });
+    }).then(orderID =>{
+      console.log('Created Order ID:',orderID);
+
+    if (!orderID) {
+       throw new Error("Order ID is null");
+       } return orderID;
+       }).catch(err => { 
+        console.error('Error creating order:', err);
+         throw err; 
+        }); 
+      
   };
 
   const onApprove = (data, actions) => {

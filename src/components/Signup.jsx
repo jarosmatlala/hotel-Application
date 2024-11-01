@@ -45,21 +45,24 @@ const SignUp = () =>{
                         onChange={(e) => setEmail(e.target.value)} />
                     </Form.Group>
 
-                <Form.Group controlId="formPassword">
+                <Form.Group controlId="formBasicEmail">
                     <Form.Control 
                     type="password" placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}/>
                 </Form.Group>
-
+                <a href="/terms-and-condition.pdf" target="_blank" rel="noopener noreferrer">
+          Terms and Conditions
+        </a>
                     <Button variant="primary" type="submit">
                         SignUp
                     </Button>
                 </Form>
                 
-            <GoogleButton className="gbtn" type="dark" />
-        <div className="auth-navigation">
+            {/* <GoogleButton className="gbtn" type="dark" /> */}
+         
+        {/* <div className="auth-navigation">
 Dont have an account ? <Link to="/">Log In</Link>
-        </div>
+        </div> */}
         </div>
         </div>
         </>
