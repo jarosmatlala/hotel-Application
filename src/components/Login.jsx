@@ -33,14 +33,9 @@ const Login = () => {
     return (
         <>
             <div className="auth-container">
-                <div className="p">
-                    <br />
-                    <br />
-                    <br />
-
-                    <h2 className="h2">LogIn</h2>
+                <div className="auth-form">
+                    <h2 className="h2">Log  In</h2>
                     {error && <Alert variant="danger"> {error} </Alert>}
-
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="h2" controlId="formBasicEmail">

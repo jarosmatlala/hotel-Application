@@ -7,7 +7,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Signup from "./components/Signup";
 import { Button } from 'bootstrap';
 import { UserAuthContextProvider } from './context/UserAuthContext';
-import Navbar from './components/Navbar.jsX';
+import Navbar from './components/Navbar.jsx';
 import Accommodation from './components/Accommodation'; 
 import Gallery from './components/Gallery';
 import CustomDatePicker from './components/DatePicker';

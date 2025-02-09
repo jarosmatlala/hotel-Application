@@ -4,7 +4,7 @@ import {Form,Alert} from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import {useUserAuth} from "../context/UserAuthContext";
 import GoogleButton from "react-google-button";
-import "./AuthStyles.css";
+import "./login.css";
 
 
 const SignUp = () =>{
@@ -23,7 +23,7 @@ const SignUp = () =>{
         setError("");
         try {
             await signUp(email,password);
-            navigate("/Login");
+            navigate("/");
         }catch (err){
             setError(err.message);
         }
@@ -49,20 +49,18 @@ const SignUp = () =>{
                     <Form.Control 
                     type="password" placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}/>
-                </Form.Group>
+               <Button variant="primary" type="submit">
+                        SignUp
+                    </Button>
+               </Form.Group>
+                
                 <a href="/terms-and-condition.pdf" target="_blank" rel="noopener noreferrer">
           Terms and Conditions
         </a>
-                    <Button variant="primary" type="submit">
-                        SignUp
-                    </Button>
+                   
                 </Form>
                 
-            {/* <GoogleButton className="gbtn" type="dark" /> */}
-         
-        {/* <div className="auth-navigation">
-Dont have an account ? <Link to="/">Log In</Link>
-        </div> */}
+            
         </div>
         </div>
         </>
